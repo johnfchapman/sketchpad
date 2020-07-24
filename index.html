@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<style>
+    #maindrawingarea {
+        display: grid;
+        background-color: black;
+        grid-template-columns: repeat(100, auto);
+        grid-template-rows: repeat(50, auto);
+        padding: 5px;
+        height: 500px;
+        margin: auto;
+        width: 80%;
+        position: relative;
+        top: 10px;
+    }
+
+    body {
+        background-color: aquamarine;
+        text-align: center;
+    }
+
+    .gridbox {
+        background-color: white;
+
+    }
+    #colorselection {
+        text-align: center;
+        position: relative;
+        top: 15px;
+        left: 47%;
+        background-color: wheat;
+        width: 100px;
+    }
+    #colorbuttons {
+        position: relative;
+        top: 15px;
+    }
+
+</style>
+
+<body>
+    <h1>
+        Sketchpad Drawing Tool
+    </h1>
+    <div id="buttons">
+        <button id="pen">Pen</button>
+        <button id="eraser">Eraser</button>
+        <button id="clear">Clear</button>
+    </div>
+    <div id="maindrawingarea">
+    </div>
+    <div id="colorselection">Change Color</div>
+    <div id="colorbuttons">
+        <button id="black">Black</button>
+        <button id="red">Red</button>
+        <button id="blue">Blue</button>
+        <button id="green">Green</button>
+        <button id="yellow">Yellow</button>
+        <button id="violet">Violet</button>
+        <button id="orange">Orange</button>
+    </div>
+</body>
+
+</html>
+<script>
+    var width = 100;
+    var height = 50;
+    var pen = true;
+    var color = "black";
+    var penclicked = false;
+    var iscurr = false;
+    var drawingarea = document.querySelector("#maindrawingarea");
+    var penbutton = document.querySelector("#pen");
+    var eraserbutton = document.querySelector("#eraser");
+    var clearbutton = document.querySelector("#clear");
+    var blackbutton = document.querySelector("#black");
+    var redbutton = document.querySelector("#red");
+    var bluebutton = document.querySelector("#blue");
+    var greenbutton = document.querySelector("#green");
+    var yellowbutton = document.querySelector("#yellow");
+    var violetbutton = document.querySelector("#violet");
+    var orangebutton = document.querySelector("#orange");
+
+    penbutton.style.backgroundColor = "teal";
+    penbutton.addEventListener("click", () => {
+        pen = true;
+        penbutton.style.backgroundColor = "teal";
+        eraserbutton.style.backgroundColor = "white";
+    });
+    eraserbutton.addEventListener("click", () => {
+        pen = false;
+        eraserbutton.style.backgroundColor = "teal";
+        penbutton.style.backgroundColor = "white";
+    });
+    clearbutton.addEventListener("click", () => {
+        var allboxes = document.getElementsByClassName('gridbox');
+        for(i = 0; i < allboxes.length; i++){
+            allboxes[i].style.backgroundColor = "white";
+        }
+    });
+
+    blackbutton.addEventListener("click", () => {color = "black";});
+    redbutton.addEventListener("click", () => {color = "red";});
+    bluebutton.addEventListener("click", () => {color = "blue";});
+    greenbutton.addEventListener("click", () => {color = "green";});
+    yellowbutton.addEventListener("click", () => {color = "yellow";});
+    violetbutton.addEventListener("click", () => {color = "violet";});
+    orangebutton.addEventListener("click", () => {color = "orange";});
+
+
+
+
+
+    for (i = 0; i < width * height; i++) {
+        let gridnode = document.createElement("div");
+        gridnode.addEventListener("mouseenter", () => {
+            if (pen) {
+                if (gridnode.style.backgroundColor == color) {
+                    iscurr = true;
+                } else {
+                    gridnode.style.backgroundColor = color;
+                }
+            } else {
+                if(penclicked){
+                    gridnode.style.backgroundColor = "white";
+                }
+            }
+        });
+        gridnode.addEventListener("mousedown", () => { penclicked = true });
+        gridnode.addEventListener("mouseup", () => { penclicked = false; iscurr = true });
+        gridnode.addEventListener("mouseleave", () => {
+            if (pen) {
+                if (!penclicked) {
+                    if (iscurr) {
+                        iscurr = false;
+                    } else {
+                        gridnode.style.backgroundColor = "white";
+                    }
+                }
+            } else {
+                if(penclicked){
+                    gridnode.style.backgroundColor = "white";
+                }
+            }
+        });
+        gridnode.classList.add("gridbox");
+        drawingarea.appendChild(gridnode);
+    }
+
+</script>
